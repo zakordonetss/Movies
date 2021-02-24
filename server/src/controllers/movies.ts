@@ -20,3 +20,13 @@ export const MoviesController = Router()
         const movies = moviesService.filterByYear(year);
         res.status(201).send(movies);
     })
+    .put('/filter/gener/:gener', (req, res) => {
+        const { gener } = req.params;
+        const movies = moviesService.filterByGenre(gener);
+        res.status(201).send(movies);
+    })
+    // .put('/filter/genres/:gener1.:gener2', (req, res) => {
+    //     const { genres } = req.params;
+    //     const movies = moviesService.filterByGenres(genres);
+    //     res.status(201).send(movies);
+    // })
