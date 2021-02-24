@@ -8,10 +8,3 @@ export function globalErrorHandler(err: Error, req: Request, res: Response, next
 export function notFoundErrorHandler(req: Request, res: Response, next: NextFunction): void {
 	throw new Error('Page Not Found');
 }
-
-export function dimaMiddlewhere(req: Request, res: Response, next: NextFunction) {
-    if (req.body) {
-        req.body.valik = 'valik'
-    }
-    next();
-}
