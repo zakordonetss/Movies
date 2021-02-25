@@ -5,7 +5,7 @@ import csvtojson from 'csvtojson';
 const csv = csvtojson();
 
 export class MoviesService {
-    private readonly _csvFilePath = resolve(__dirname, '../data', 'movies22.csv');
+    private readonly _csvFilePath = resolve(__dirname, '../data', 'movies23.csv');
     private _movies: IMovie[];
     private _genres: string[];
 
@@ -69,7 +69,7 @@ export class MoviesService {
             const existingGenre = this._genres.includes(genre);
 		    if (!existingGenre) throw new Error(`There is now such genre: ${genre}`);
 
-            const filmes = this._movies.filter((movie: IMovie) => movie.genre.toLowerCase() === genre.toLowerCase());
+            const filmes = this._movies.filter((movie: IMovie) => movie.genre.toLowerCase().includes(genre.toLowerCase()));
 
             return filmes;
 
@@ -83,8 +83,13 @@ export class MoviesService {
         try {
             const inExistantGenre = genres.find((item) => !this._genres.includes(item));
             if (inExistantGenre) throw new Error(`There is now such genre: ${inExistantGenre}`);
+            
+            const filmes = this._movies.filter((movie: IMovie) => {
+                const reqGenres: string = genres.join(',').toLowerCase().split(',').sort().join(',');
+                const availableGenres: string = movie.genre.toLowerCase().split(',').sort().join(',');
 
-            const filmes = this._movies.filter((movie: IMovie) => genres.includes(movie.genre.toLowerCase()))
+                return availableGenres.includes(reqGenres);
+            })
 
             if (filmes.length === 0) throw new Error("Invalin films genre");
             return filmes;
@@ -99,7 +104,7 @@ export class MoviesService {
         csv
             .fromFile(this._csvFilePath)
             .then((jsonData) => {
-                const filteredJsonData = jsonData.filter(i => i.id && i.name && i.genre && i.year);
+                const filteredJsonData = jsonData; //.filter(i => i.id && i.name && i.genre && i.year);
                 this._movies = filteredJsonData;
                 return filteredJsonData;
             })
