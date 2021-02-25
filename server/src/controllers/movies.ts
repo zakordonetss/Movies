@@ -9,24 +9,28 @@ export const MoviesController = Router()
         const movies = moviesService.read();
         res.status(200).send(movies);
     })
-    .put('/sort/year/:info', (req, res) => {
+    .get('/sort/year/:info', (req, res) => {
         // info === descending or ascending
         const { info } = req.params;
         const movies = moviesService.sortByYears(info);
-        res.status(201).send(movies);
+        if (movies) res.status(200).send(movies);
+        else res.status(404).send('Movies not found');
     })
-    .put('/filter/years/:year', (req, res) => {
+    .get('/filter/years/:year', (req, res) => {
         const { year } = req.params;
         const movies = moviesService.filterByYear(year);
-        res.status(201).send(movies);
+        if (movies) res.status(200).send(movies);
+        else res.status(404).send('Movies not found');
     })
-    .put('/filter/gener/:gener', (req, res) => {
+    .get('/filter/gener/:gener', (req, res) => {
         const { gener } = req.params;
         const movies = moviesService.filterByGenre(gener);
-        res.status(201).send(movies);
+        if (movies) res.status(200).send(movies);
+        else res.status(404).send('Movies not found');
     })
-    // .put('/filter/genres/:gener1.:gener2', (req, res) => {
-    //     const { genres } = req.params;
-    //     const movies = moviesService.filterByGenres(genres);
-    //     res.status(201).send(movies);
-    // })
+    .get('/filter/genres', (req, res) => {
+        const genres: string[] = Object.values(req.query).toString().split(',');
+        const movies = moviesService.filterByGenres(genres);
+        if (movies) res.status(200).send(movies);
+        else res.status(404).send('Movies not found');
+    })

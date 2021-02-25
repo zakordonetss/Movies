@@ -9,7 +9,7 @@ export class MoviesService {
     private _movies: IMovie[];
     private _genres: string[];
 
-    public async start(): Promise<void> {
+    public start(): void {
         this._setMoviesData();
     }
 
@@ -19,7 +19,8 @@ export class MoviesService {
 
     public sortByYears(info: string): IMovie[] {
         try {
-            this._movies.sort((a, b) => {
+            const films = this._movies;
+            films.sort((a, b) => {
                 const first = a.year;
                 const second = b.year;
 
@@ -42,7 +43,7 @@ export class MoviesService {
                     }
                 }
             })
-            return this._movies;
+            return films;
 
         } catch(err) {
             if (err instanceof Error) throw err;
@@ -65,8 +66,6 @@ export class MoviesService {
 
     public filterByGenre(genre: string): IMovie[] {
         try {
-            console.log(this._genres);
-            
             const existingGenre = this._genres.includes(genre);
 		    if (!existingGenre) throw new Error(`There is now such genre: ${genre}`);
 
@@ -82,8 +81,6 @@ export class MoviesService {
 
     public filterByGenres(genres: string[]): IMovie[] {
         try {
-            console.log(genres);
-            
             const inExistantGenre = genres.find((item) => !this._genres.includes(item));
             if (inExistantGenre) throw new Error(`There is now such genre: ${inExistantGenre}`);
 
@@ -121,5 +118,3 @@ export interface IMovie {
     genre: string;
     year: string;
 }
-
-export type SortKey = keyof IMovie;
