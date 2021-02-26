@@ -1,4 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MOVIES_PATH, GENRES_PATH } from 'src/app/units/config';
@@ -16,7 +17,7 @@ export class TableComponent implements OnInit {
     public pageSize = 10;
     public currentPage = 0;
     public totalSize;
-    public genresReq = this.tableDataService.genresReq;
+    public genresReq = new FormControl();
     
     private _movies: IMovie[];
     private _genres: string[];
@@ -32,8 +33,9 @@ export class TableComponent implements OnInit {
     }
 
     public async filterHandle() {
-        const reqPATH = this.tableDataService.getReqPath(MOVIES_PATH);
-        this._movies = await this.tableDataService.getMovies(reqPATH);
+        const reqPath = this.tableDataService.getReqPath(MOVIES_PATH);
+        const reqpPathWithGenres = this._getReqPathWithGenres(reqPath)
+        this._movies = await this.tableDataService.getMovies(reqpPathWithGenres);
         this._iterator();
     }
 
@@ -46,6 +48,16 @@ export class TableComponent implements OnInit {
         this.pageSize = e.pageSize;
         this._iterator();
         return
+    }
+
+    private _getReqPathWithGenres (reqPath: string): string {
+        const reqGenres: string[] = this.genresReq.value;
+
+        if (reqGenres) {
+            reqGenres.forEach((item) => reqPath = reqPath + '&genres=' + item.toLowerCase())
+        }
+
+        return reqPath;
     }
 
     private _iterator() {

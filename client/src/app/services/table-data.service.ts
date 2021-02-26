@@ -1,12 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormControl } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TableDataService {
-    public genresReq = new FormControl();
     public startYear: string = '';
     public lastYear: string = '';
 
@@ -36,11 +34,6 @@ export class TableDataService {
 
     public getReqPath(PATH: string): string {
         let reqPath: string = PATH + '?'
-        const reqGenres: string[] = this.genresReq.value;
-
-        if (reqGenres) {
-            reqGenres.forEach((item) => reqPath = reqPath + '&genres=' + item.toLowerCase())
-        }
 
         if (this.startYear) {
             reqPath = reqPath + '&start=' + this.startYear;
