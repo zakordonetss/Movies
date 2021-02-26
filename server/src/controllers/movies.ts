@@ -6,6 +6,9 @@ moviesService.start();
 
 export const MoviesController = Router()
     .get('/movies', (req, res) => {
-        const result = moviesService.getMovies(req.query);
-        res.status(200).send(result);
+        const movies = moviesService.getMovies(req.query);
+        res.status(200).send(movies);
+    })
+    .get('/genres', (req, res) => {
+        res.status(200).send(moviesService.getGenres);
     })

@@ -5,7 +5,7 @@ const csv = csvtojson();
 export class MoviesService {
     private readonly _csvFilePath = resolve(__dirname, '../data', 'movies_mini.csv');
     private _movies: IMovie[];
-    public genres: string[];
+    private _genres: string[];
 
     public async start(): Promise<void> {
         await this._setMoviesData();
@@ -13,6 +13,10 @@ export class MoviesService {
 
     public get movies(): IMovie[] {
         return [...this._movies];
+    }
+
+    public get getGenres() {
+        return [...this._genres];
     }
 
     public getMovies({ genres, start, end }: IFilters = { }): IMovie[] {
@@ -38,7 +42,7 @@ export class MoviesService {
         genresList = genresList.map((item) => item?.toLowerCase().trim());
 
         try {
-            const inExistantGenre = genresList.find((item) => !this.genres.includes(item));
+            const inExistantGenre = genresList.find((item) => !this._genres.includes(item));
             if (inExistantGenre) throw new Error(`There is now such genre: ${inExistantGenre}`);
 
             return movies.filter((item) => {
@@ -63,7 +67,7 @@ export class MoviesService {
                 result.genres = result.genre?.toLowerCase().split(',').map((item) => item.trim());
                 return result;
             })
-            this.genres = this._movies.reduce((acc, curr) => {
+            this._genres = this._movies.reduce((acc, curr) => {
                 const genres = curr.genre.toLocaleLowerCase().split(',').map((item) => item.trim()).filter((item) => !acc.includes(item));
                 return [...acc, ...genres];
             }, []);
