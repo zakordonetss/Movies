@@ -11,5 +11,5 @@ npm run dev
 ```bash
 cd client
 npm i
-ng serve -o
+npm run dev
 ```
