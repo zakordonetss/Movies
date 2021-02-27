@@ -3,7 +3,7 @@ import csvtojson from 'csvtojson';
 const csv = csvtojson();
 
 export class MoviesService {
-    private readonly _csvFilePath = resolve(__dirname, '../data', 'movies_mini.csv');
+    private readonly _csvFilePath = resolve(__dirname, '../data', 'movies_middle.csv');
     private _movies: IMovie[];
     private _genres: string[];
 

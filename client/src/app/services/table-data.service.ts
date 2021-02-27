@@ -17,7 +17,8 @@ export class TableDataService {
             return result;
 
         } catch (err) {
-             
+            if (err instanceof Error) throw err;
+            else throw new Error("Error during getting movies");
         }
     }
 
@@ -28,7 +29,8 @@ export class TableDataService {
             return result;
 
         } catch (err) {
-             
+            if (err instanceof Error) throw err;
+            else throw new Error("Error during getting geners");
         }
     }
 

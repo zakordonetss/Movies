@@ -1,3 +1,5 @@
+![](Movies.gif)
+
 # Stepls to launch project server
 
 ```bash
